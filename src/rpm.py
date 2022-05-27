@@ -1,5 +1,6 @@
 from enum import Enum
 import subprocess
+import re
 
 from .required import requiredpkgs
 
@@ -14,11 +15,13 @@ class Rpm:
         self.__version = self.__get_version()
 
     def __get_version(self) -> RpmVersion:
-        version_tokens = self.__fetch_version().split()
-        if len(version_tokens) < 3:
+        version_regex = r"(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)"
+        version = re.search(version_regex, self.__fetch_version())
+
+        if version is None:
             raise RuntimeError("couldn't get RPM version")
 
-        version = int(version_tokens[2].split('.')[0])
+        version = int(version["major"])
         if version not in [RpmVersion.V3, RpmVersion.V4]:
             raise RuntimeError(f"unsupported RPM version: v{version}")
 
