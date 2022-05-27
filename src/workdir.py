@@ -38,7 +38,7 @@ class WorkDir:
         atexit.register(self.__cleanup)
 
         workdir_package_path = os.path.join(path, self.package_name)
-        shutil.copy2(self.__package_path, path)
+        shutil.copy(self.__package_path, workdir_package_path)
 
         self.__path = path
         self.__buildroot_path = buildroot_path
