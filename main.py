@@ -5,16 +5,17 @@ from ifaces import *
 
 
 def process(args: argparse.Namespace):
-    rpminfo = RPMInfo()
     workdir = WorkDir(args.rpmfile)
     info(f"start rebuilding {under(workdir.package_name)}")
+
+    rpm = Rpm()
 
     unpacker = Unpacker(workdir)
     rebuilder = Rebuilder(workdir)
     specgen = {
-        RPMVersion.V3: SpecGenV3,
-        RPMVersion.V4: SpecGenV4
-    }[rpminfo.version](workdir)
+        RpmVersion.V3: SpecGenV3,
+        RpmVersion.V4: SpecGenV4
+    }[rpm.version](workdir)
 
     rerpm = Rerpm(unpacker, specgen, rebuilder)
     rerpm.process()

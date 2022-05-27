@@ -4,17 +4,17 @@ import subprocess
 from .required import requiredpkgs
 
 
-class RPMVersion(int, Enum):
+class RpmVersion(int, Enum):
     V3 = 3
     V4 = 4
 
 
-class RPMInfo:
+class Rpm:
     def __init__(self):
         self.__version = self.__get_version()
 
     @requiredpkgs(["rpm"])
-    def __get_version(self) -> RPMVersion:
+    def __get_version(self) -> RpmVersion:
         command = subprocess.run(["rpm", "--version"],
                                  capture_output=True, check=True)
 
@@ -23,11 +23,11 @@ class RPMInfo:
             raise RuntimeError("couldn't get RPM version")
 
         version = int(output_list[2].split('.')[0])
-        if version not in [RPMVersion.V3, RPMVersion.V4]:
+        if version not in [RpmVersion.V3, RpmVersion.V4]:
             raise RuntimeError(f"unsupported RPM version: v{version}")
 
-        return RPMVersion(version)
+        return RpmVersion(version)
 
     @property
-    def version(self) -> RPMVersion:
+    def version(self) -> RpmVersion:
         return self.__version
