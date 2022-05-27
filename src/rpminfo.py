@@ -1,6 +1,8 @@
 from enum import Enum
 import subprocess
 
+from .required import requiredpkgs
+
 
 class RPMVersion(int, Enum):
     V3 = 3
@@ -11,6 +13,7 @@ class RPMInfo:
     def __init__(self):
         self.__version = self.__get_version()
 
+    @requiredpkgs(["rpm"])
     def __get_version(self) -> RPMVersion:
         command = subprocess.run(["rpm", "--version"],
                                  capture_output=True, check=True)

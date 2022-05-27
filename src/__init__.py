@@ -6,3 +6,4 @@ from .specgen_v3 import SpecGenV3
 from .rerpm import Rerpm
 from .termutils import info, warn, error, under
 from .rpminfo import RPMInfo, RPMVersion
+from .required import requiredpkgs
